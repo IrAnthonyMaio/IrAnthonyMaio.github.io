@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anthony Maio</title>
+<meta name="description" content="Anthony Maio, researcher at the Smart Grids Lab, University of Liège. Operating envelopes for power networks.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: sticky top bar, a profile column beside the biography, then
+   centred section titles over grids of cards with drawn thumbnails. */
+:root {
+  --bg: #f4f6fa;
+  --surface: #ffffff;
+  --ink: #131c2b;
+  --muted: #56647a;
+  --rule: #dfe5ee;
+  --accent: #2247c9;
+  --accent-2: #0e9f9a;
+  --accent-tint: rgba(34, 71, 201, 0.09);
+  --accent-tint-strong: rgba(34, 71, 201, 0.20);
+  --warn: #b86e00;
+  --warn-tint: rgba(184, 110, 0, 0.15);
+  --shadow: 0 1px 2px rgba(19, 28, 43, 0.06), 0 8px 24px rgba(19, 28, 43, 0.07);
+  --shadow-lift: 0 2px 4px rgba(19, 28, 43, 0.08), 0 16px 36px rgba(19, 28, 43, 0.13);
+  --bar: rgba(255, 255, 255, 0.82);
+  --font-display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0c121c;
+    --surface: #151e2c;
+    --ink: #e7ecf4;
+    --muted: #97a4b8;
+    --rule: #27344a;
+    --accent: #84a8ff;
+    --accent-2: #45cfc8;
+    --accent-tint: rgba(132, 168, 255, 0.12);
+    --accent-tint-strong: rgba(132, 168, 255, 0.26);
+    --warn: #f0b24a;
+    --warn-tint: rgba(240, 178, 74, 0.18);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.3);
+    --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.45), 0 16px 36px rgba(0, 0, 0, 0.45);
+    --bar: rgba(12, 18, 28, 0.82);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0c121c;
+  --surface: #151e2c;
+  --ink: #e7ecf4;
+  --muted: #97a4b8;
+  --rule: #27344a;
+  --accent: #84a8ff;
+  --accent-2: #45cfc8;
+  --accent-tint: rgba(132, 168, 255, 0.12);
+  --accent-tint-strong: rgba(132, 168, 255, 0.26);
+  --warn: #f0b24a;
+  --warn-tint: rgba(240, 178, 74, 0.18);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.3);
+  --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.45), 0 16px 36px rgba(0, 0, 0, 0.45);
+  --bar: rgba(12, 18, 28, 0.82);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.6;
+}
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+p { margin: 0; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; }
+ul { margin: 0; padding: 0; list-style: none; }
+svg.ico { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+.todo { outline: 1px dashed var(--warn); background: var(--warn-tint); border-radius: 4px; padding: 0 0.3em; }
+.draft-bar { background: var(--warn-tint); font-size: 14px; padding: 8px 24px; text-align: center; }
+
+/* Top bar */
+.bar { position: sticky; top: 0; z-index: 10; background: var(--bar); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--rule); }
+.bar-in { max-width: 1120px; margin: 0 auto; padding: 12px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 24px; }
+.brand { font-family: var(--font-display); font-weight: 700; font-size: 18px; color: var(--ink); text-decoration: none; }
+.bar nav ul { display: flex; flex-wrap: wrap; gap: 2px 4px; }
+.bar nav a { display: block; padding: 6px 12px; border-radius: 999px; font-size: 15px; font-weight: 500; color: var(--muted); text-decoration: none; transition: background-color .15s, color .15s; }
+.bar nav a:hover { background: var(--accent-tint); color: var(--accent); }
+
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+/* Hero */
+.hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--rule); }
+.hero::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(600px 320px at 12% 0%, var(--accent-tint-strong), transparent 70%),
+    radial-gradient(520px 300px at 95% 10%, color-mix(in srgb, var(--accent-2) 18%, transparent), transparent 70%);
+}
+.hero::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .5;
+  background-image: linear-gradient(var(--rule) 1px, transparent 1px), linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: linear-gradient(to bottom, #000, transparent 85%);
+  -webkit-mask-image: linear-gradient(to bottom, #000, transparent 85%);
+}
+.hero-in { position: relative; z-index: 1; display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 64px; padding-top: 64px; padding-bottom: 64px; align-items: start; }
+.profile { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; }
+.avatar { width: 176px; height: 176px; border-radius: 50%; padding: 5px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow: var(--shadow); }
+.avatar-in { width: 100%; height: 100%; border-radius: 50%; background: var(--surface); display: grid; place-items: center; font-family: var(--font-display); font-weight: 700; font-size: 60px; letter-spacing: -0.02em; color: var(--accent); overflow: hidden; }
+.avatar-in img { width: 100%; height: 100%; object-fit: cover; }
+.profile h1 { font-size: 32px; line-height: 1.1; font-weight: 700; letter-spacing: -0.01em; margin-top: 6px; }
+.role { font-size: 18px; color: var(--muted); }
+.affil { font-size: 15px; color: var(--muted); line-height: 1.45; }
+.socials { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 4px; }
+.chip { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--rule); background: var(--surface); font-size: 14px; font-weight: 500; color: var(--ink); text-decoration: none; transition: transform .15s, border-color .15s, color .15s; }
+.chip:hover { transform: translateY(-2px); border-color: var(--accent); color: var(--accent); }
+.chip.todo { outline: 1px dashed var(--warn); background: var(--warn-tint); }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 999px; background: var(--accent); color: var(--surface); font-weight: 600; font-size: 15px; text-decoration: none; box-shadow: var(--shadow); transition: transform .15s, box-shadow .15s; margin-top: 6px; }
+.btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-lift); }
+.btn.todo { outline: 2px dashed var(--warn); outline-offset: 3px; background: var(--accent); }
+
+.bio { display: flex; flex-direction: column; gap: 18px; }
+.eyebrow { font-family: var(--font-mono); font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); }
+.lede { font-family: var(--font-display); font-weight: 700; font-size: clamp(28px, 3.6vw, 40px); line-height: 1.12; letter-spacing: -0.015em; max-width: 24ch; }
+.bio p { max-width: 65ch; }
+.duo { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 28px 40px; margin-top: 10px; }
+.duo h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+.icolist { display: flex; flex-direction: column; gap: 9px; font-size: 16px; }
+.icolist li { display: flex; gap: 10px; align-items: flex-start; }
+.icolist svg { color: var(--accent); margin-top: 4px; }
+.icolist small { display: block; color: var(--muted); font-size: 14px; }
+
+/* Sections */
+section.block { padding: 72px 0; scroll-margin-top: 56px; }
+section.block.alt { background: var(--surface); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.head { text-align: center; margin-bottom: 40px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.head h2 { font-size: clamp(30px, 4vw, 40px); font-weight: 700; letter-spacing: -0.015em; }
+.head::after { content: ""; width: 56px; height: 4px; border-radius: 4px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); order: 2; }
+.head p { color: var(--muted); max-width: 58ch; order: 3; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px; }
+.card { background: var(--surface); border: 1px solid var(--rule); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); display: flex; flex-direction: column; transition: transform .2s, box-shadow .2s; }
+.card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
+.alt .card { background: var(--bg); }
+.thumb { aspect-ratio: 16 / 9; display: block; width: 100%; }
+.thumb svg { display: block; width: 100%; height: 100%; }
+.card-body { padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.card h3 { font-size: 20px; font-weight: 700; line-height: 1.2; }
+.card p { font-size: 16px; color: var(--muted); }
+.tag { align-self: flex-start; font-size: 12.5px; font-weight: 600; padding: 3px 11px; border-radius: 999px; background: var(--accent-tint); color: var(--accent); }
+.tag.t2 { background: color-mix(in srgb, var(--accent-2) 14%, transparent); color: var(--accent-2); }
+.date { margin-top: auto; padding-top: 6px; font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* Figure */
+figure { margin: 40px 0 0; background: var(--surface); border: 1px solid var(--rule); border-radius: 16px; padding: 22px 22px 18px; box-shadow: var(--shadow); }
+.fig-title { font-family: var(--font-display); font-weight: 700; font-size: 20px; margin-bottom: 12px; }
+.chart-wrap { overflow-x: auto; }
+.chart-wrap svg { display: block; width: 100%; min-width: 520px; height: auto; }
+.c-grid { stroke: var(--rule); stroke-width: 1; }
+.c-axis { stroke: var(--muted); stroke-width: 1; }
+.c-text { font-family: var(--font-mono); font-size: 11px; fill: var(--muted); }
+.c-label { font-family: var(--font-mono); font-size: 11.5px; fill: var(--ink); }
+.c-label-accent { fill: var(--accent); }
+.c-label-warn { fill: var(--warn); }
+.c-firm { fill: var(--accent-tint-strong); }
+.c-flex { fill: var(--accent-tint); }
+.c-env { fill: none; stroke: var(--accent); stroke-width: 2.25; stroke-linejoin: round; }
+.c-firmline { stroke: var(--accent); stroke-width: 1; stroke-dasharray: 5 4; }
+.c-avail { fill: none; stroke: var(--ink); stroke-width: 1.1; stroke-dasharray: 3 3; opacity: 0.75; }
+.c-inj { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linejoin: round; }
+.c-curt { fill: var(--warn-tint); stroke: var(--warn); stroke-width: 0.75; }
+figcaption { margin-top: 14px; display: flex; flex-direction: column; gap: 10px; font-size: 14.5px; color: var(--muted); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 20px; font-family: var(--font-mono); font-size: 12px; }
+.legend li { display: flex; align-items: center; gap: 8px; }
+.sw { width: 22px; height: 0; border-top: 2px solid var(--ink); display: inline-block; }
+.sw.env { border-color: var(--accent); }
+.sw.avail { border-top: 1px dashed var(--ink); }
+.sw.curt { height: 10px; border: 1px solid var(--warn); background: var(--warn-tint); }
+
+/* Awards */
+.award { flex-direction: row; align-items: flex-start; gap: 18px; padding: 24px; }
+.medal { flex: none; width: 56px; height: 56px; border-radius: 14px; display: grid; place-items: center; color: #fff; background: linear-gradient(135deg, #d99a1c, #b86e00); box-shadow: var(--shadow); }
+.medal svg { width: 28px; height: 28px; }
+.award div { display: flex; flex-direction: column; gap: 6px; }
+
+/* Rows (papers, talks) */
+.rows { display: flex; flex-direction: column; gap: 14px; max-width: 880px; margin: 0 auto; }
+.row { display: grid; grid-template-columns: 132px minmax(0, 1fr); gap: 20px; align-items: start; background: var(--surface); border: 1px solid var(--rule); border-left: 4px solid var(--accent); border-radius: 12px; padding: 18px 22px; transition: transform .2s, box-shadow .2s; }
+.alt .row { background: var(--bg); }
+.row:hover { transform: translateX(4px); box-shadow: var(--shadow); }
+.row h3 { font-size: 18.5px; font-weight: 700; line-height: 1.25; margin-bottom: 4px; }
+.row p { font-size: 16px; color: var(--muted); }
+.pill { justify-self: start; font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; padding: 4px 10px; border-radius: 999px; background: var(--accent-tint); color: var(--accent); margin-top: 2px; font-variant-numeric: tabular-nums; }
+.tools { text-align: center; margin-top: 28px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.tools span { font-family: var(--font-mono); font-size: 13px; padding: 4px 12px; border-radius: 999px; border: 1px solid var(--rule); color: var(--muted); background: var(--surface); }
+
+/* Note */
+.note { max-width: 760px; margin: 0 auto; padding: 28px 30px; gap: 14px; }
+.note:hover { transform: none; box-shadow: var(--shadow); }
+.note h3 { font-size: 24px; }
+.note p { color: var(--ink); font-size: 17px; }
+
+/* Contact */
+.mailbox { max-width: 560px; margin: 0 auto; background: var(--surface); border: 1px solid var(--rule); border-radius: 16px; box-shadow: var(--shadow); padding: 32px 28px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
+.mailbox .btn { margin-top: 4px; }
+.addr { font-family: var(--font-mono); font-size: 15px; user-select: all; overflow-wrap: anywhere; }
+.where { color: var(--muted); font-size: 15px; }
+.contact { max-width: 620px; margin: 0 auto; display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 10px 20px; }
+.contact dt { font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; padding-top: 4px; }
+.contact dd { margin: 0; overflow-wrap: anywhere; }
+footer { text-align: center; color: var(--muted); font-size: 14px; padding: 28px 24px 40px; border-top: 1px solid var(--rule); }
+
+@media (max-width: 860px) {
+  .hero-in { grid-template-columns: minmax(0, 1fr); gap: 36px; padding-top: 40px; padding-bottom: 48px; }
+  section.block { padding: 52px 0; }
+  .wrap, .bar-in { padding-left: 16px; padding-right: 16px; }
+}
+@media (max-width: 560px) {
+  .row, .contact { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .award { flex-direction: column; }
+  figure { padding: 14px 12px 12px; }
+  .note { padding: 22px 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .card, .row, .chip, .btn { transition: none; }
+  .card:hover, .row:hover, .chip:hover, .btn:hover { transform: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- DRAFT BAR: delete this block once every amber-outlined item is filled in. -->
+<div class="draft-bar">Draft. Items outlined in amber still need your details; search the file for <code>todo</code>.</div>
+
+<header class="bar">
+  <div class="bar-in">
+    <a class="brand" href="#about">Anthony Maio</a>
+    <nav aria-label="Sections">
+      <ul>
+        <li><a href="#about">Bio</a></li>
+        <li><a href="#research">Research</a></li>
+        <li><a href="#awards">Awards</a></li>
+        <li><a href="#output">Papers</a></li>
+        <li><a href="#teaching">Teaching</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div class="hero" id="about">
+  <div class="wrap hero-in">
+
+    <aside class="profile">
+      <!-- PHOTO: once the site is hosted, put photo.jpg next to index.html and replace
+           the letters AM below with <img src="photo.jpg" alt="Portrait of Anthony Maio"> -->
+      <div class="avatar"><div class="avatar-in" aria-hidden="true">AM</div></div>
+      <h1>Anthony Maio</h1>
+      <div class="role">Researcher in power systems</div>
+      <div class="affil">Smart Grids Lab<br>University of Liège, Belgium</div>
+      <!-- Replace each href="#contact" with the real address, then remove the word todo from the class. -->
+      <div class="socials">
+        <a class="chip" href="mailto:anthony.maio@uliege.be"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>Email</a>
+        <a class="chip todo" href="#contact"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10v7M8 7v.5M12 17v-4a2.2 2.2 0 0 1 4.4 0v4M12 10v7"/></svg>LinkedIn</a>
+        <a class="chip todo" href="#contact"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6l-6 6 6 6M16 6l6 6-6 6"/></svg>GitHub</a>
+        <a class="chip todo" href="#contact"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11.5V16c3 2.5 9 2.5 12 0v-4.5"/></svg>Scholar</a>
+      </div>
+      <a class="btn todo" href="#contact"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>Download CV</a>
+    </aside>
+
+    <div class="bio">
+      <div class="eyebrow">About me</div>
+      <p class="lede">Operating envelopes as a common language between network operators and grid users.</p>
+      <p>I am a researcher at the Smart Grids Lab of the University of Liège, where I am starting a PhD under the supervision of Prof. Damien Ernst. My work sits between optimisation, regulatory analysis and distribution network management.</p>
+      <p>An operating envelope tells a grid user, period by period, how much power it may inject or draw without endangering the network. I study how these limits should be computed, how they should be allocated between users when the network is constrained, and how users could trade them among themselves.</p>
+      <p>I hold an MSc in Energy Engineering from the University of Liège. My master's thesis dealt with the coordination of transmission and distribution system operators through power operating envelopes, computed with a QC relaxation of the AC power flow equations on networks that include phase-shifting transformers. It was carried out with the industrial partners RTE and Gérédis and with TU Delft, and received the Elia Group Award and the AIM Award for the best master's thesis.</p>
+      <p>Alongside this, I contributed to work on Remote Renewable Energy Hubs presented at ECOS 2026, and I take part in teaching the Energy Market course at the University of Liège. I work in English and French.</p>
+      <div class="duo">
+        <div>
+          <h3>Interests</h3>
+          <ul class="icolist">
+            <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Operating envelopes</li>
+            <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>TSO/DSO coordination</li>
+            <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Flexible connection contracts</li>
+            <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Electricity market design</li>
+            <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Convex relaxations of power flow</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Education</h3>
+          <ul class="icolist">
+            <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11.5V16c3 2.5 9 2.5 12 0v-4.5"/></svg><span>PhD in power systems, starting<small>University of Liège</small></span></li>
+            <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11.5V16c3 2.5 9 2.5 12 0v-4.5"/></svg><span>MSc in Energy Engineering, 2026<small>University of Liège</small></span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<main>
+
+<section class="block" id="research">
+  <div class="wrap">
+    <div class="head"><h2>Research</h2><p>Three questions about the limits that networks place on their users.</p></div>
+    <div class="grid">
+
+      <article class="card">
+        <div class="thumb">
+          <svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#16308f"/><stop offset="1" stop-color="#0e9f9a"/></linearGradient></defs>
+            <rect width="320" height="180" fill="url(#g1)"/>
+            <g stroke="#fff" stroke-opacity=".16"><path d="M0 45H320M0 90H320M0 135H320M80 0V180M160 0V180M240 0V180"/></g>
+            <path d="M20 150V50H90V70H130V105H190V85H240V50H300V150Z" fill="#fff" fill-opacity=".2"/>
+            <path d="M20 50H90V70H130V105H190V85H240V50H300" fill="none" stroke="#fff" stroke-width="3" stroke-linejoin="round"/>
+            <path d="M20 118H300" stroke="#fff" stroke-width="1.5" stroke-dasharray="6 5"/>
+            <path d="M20 96C60 80 90 100 130 112S200 100 240 84 280 90 300 80" fill="none" stroke="#ffd27a" stroke-width="2.5"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <span class="tag">Optimisation</span>
+          <h3>Computing envelopes</h3>
+          <p>Envelopes that remain safe under the AC power flow equations, obtained from convex relaxations such as the QC relaxation, including networks with phase-shifting transformers. With RTE, Gérédis and TU Delft.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb">
+          <svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs><linearGradient id="g2" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#0b1f4d"/><stop offset="1" stop-color="#2f5fe0"/></linearGradient></defs>
+            <rect width="320" height="180" fill="url(#g2)"/>
+            <g fill="none" stroke="#fff" stroke-width="2.5" stroke-opacity=".85"><path d="M50 90H120M120 90L190 45M120 90L190 135M190 45H270M190 135H270M190 135L250 165"/></g>
+            <g fill="#fff"><circle cx="50" cy="90" r="11"/><circle cx="120" cy="90" r="7"/><circle cx="190" cy="45" r="7"/><circle cx="190" cy="135" r="7"/><circle cx="250" cy="165" r="6"/></g>
+            <circle cx="270" cy="45" r="11" fill="#ffd27a"/><circle cx="270" cy="135" r="11" fill="#45cfc8"/>
+            <circle cx="50" cy="90" r="19" fill="none" stroke="#fff" stroke-opacity=".4" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <span class="tag t2">Regulation</span>
+          <h3>From contract to operation</h3>
+          <p>How a long-term flexible connection contract becomes a limit applied close to real time, and how curtailment is shared between users of a constrained network. Includes analysis of European and Walloon law.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb">
+          <svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs><linearGradient id="g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a6f78"/><stop offset="1" stop-color="#1b3aa8"/></linearGradient></defs>
+            <rect width="320" height="180" fill="url(#g3)"/>
+            <g fill="#fff" fill-opacity=".22"><rect x="30" y="110" width="22" height="50"/><rect x="60" y="85" width="22" height="75"/><rect x="90" y="120" width="22" height="40"/><rect x="208" y="100" width="22" height="60"/><rect x="238" y="70" width="22" height="90"/><rect x="268" y="115" width="22" height="45"/></g>
+            <g fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M120 62H196M182 48l14 14-14 14"/><path d="M200 112H124M138 98l-14 14 14 14" stroke="#ffd27a"/></g>
+          </svg>
+        </div>
+        <div class="card-body">
+          <span class="tag">Market design</span>
+          <h3>Markets for envelope rights</h3>
+          <p>Secondary markets in which grid users exchange the capacity their envelopes grant them, so that scarce network room goes to those who value it most.</p>
+        </div>
+      </article>
+
+    </div>
+
+    <figure>
+      <div class="fig-title">An operating envelope in one picture</div>
+      <div class="chart-wrap">
+<svg viewBox="0 0 720 300" role="img" aria-label="Step chart of a wind farm operating envelope over 24 hours. The limit is 10 MW at night, falls to 4.5 MW around midday, and never goes below the 4 MW firm level. Available wind power of 6.4 to 7.3 MW is curtailed between 09:00 and 15:00.">
+<line class="c-grid" x1="48" x2="700" y1="270.0" y2="270.0"/>
+<text class="c-text" x="40" y="274.0" text-anchor="end">0</text>
+<line class="c-grid" x1="48" x2="700" y1="220.0" y2="220.0"/>
+<text class="c-text" x="40" y="224.0" text-anchor="end">2</text>
+<line class="c-grid" x1="48" x2="700" y1="170.0" y2="170.0"/>
+<text class="c-text" x="40" y="174.0" text-anchor="end">4</text>
+<line class="c-grid" x1="48" x2="700" y1="120.0" y2="120.0"/>
+<text class="c-text" x="40" y="124.0" text-anchor="end">6</text>
+<line class="c-grid" x1="48" x2="700" y1="70.0" y2="70.0"/>
+<text class="c-text" x="40" y="74.0" text-anchor="end">8</text>
+<line class="c-grid" x1="48" x2="700" y1="20.0" y2="20.0"/>
+<text class="c-text" x="40" y="24.0" text-anchor="end">10</text>
+<text class="c-text" x="40" y="10" text-anchor="end">MW</text>
+<rect class="c-firm" x="48" y="170.0" width="652" height="100.0"/>
+<path class="c-flex" d="M48.0,20.0 H75.2 V20.0 H102.3 V20.0 H129.5 V20.0 H156.7 V20.0 H183.8 V20.0 H211.0 V45.0 H238.2 V70.0 H265.3 V95.0 H292.5 V120.0 H319.7 V145.0 H346.8 V157.5 H374.0 V157.5 H401.2 V145.0 H428.3 V120.0 H455.5 V95.0 H482.7 V70.0 H509.8 V45.0 H537.0 V20.0 H564.2 V20.0 H591.3 V20.0 H618.5 V20.0 H645.7 V20.0 H672.8 V20.0 H700.0 V170.0 H48 Z"/>
+<rect class="c-curt" x="292.5" y="110.0" width="27.2" height="10.0"/>
+<rect class="c-curt" x="319.7" y="100.0" width="27.2" height="45.0"/>
+<rect class="c-curt" x="346.8" y="92.5" width="27.2" height="65.0"/>
+<rect class="c-curt" x="374.0" y="87.5" width="27.2" height="70.0"/>
+<rect class="c-curt" x="401.2" y="95.0" width="27.2" height="50.0"/>
+<rect class="c-curt" x="428.3" y="105.0" width="27.2" height="15.0"/>
+<line class="c-firmline" x1="48" x2="700" y1="170.0" y2="170.0"/>
+<path class="c-avail" d="M48.0,107.5 H75.2 V95.0 H102.3 V85.0 H129.5 V90.0 H156.7 V100.0 H183.8 V115.0 H211.0 V125.0 H238.2 V132.5 H265.3 V122.5 H292.5 V110.0 H319.7 V100.0 H346.8 V92.5 H374.0 V87.5 H401.2 V95.0 H428.3 V105.0 H455.5 V117.5 H482.7 V130.0 H509.8 V140.0 H537.0 V145.0 H564.2 V135.0 H591.3 V120.0 H618.5 V105.0 H645.7 V95.0 H672.8 V100.0 H700.0"/>
+<path class="c-env" d="M48.0,20.0 H75.2 V20.0 H102.3 V20.0 H129.5 V20.0 H156.7 V20.0 H183.8 V20.0 H211.0 V45.0 H238.2 V70.0 H265.3 V95.0 H292.5 V120.0 H319.7 V145.0 H346.8 V157.5 H374.0 V157.5 H401.2 V145.0 H428.3 V120.0 H455.5 V95.0 H482.7 V70.0 H509.8 V45.0 H537.0 V20.0 H564.2 V20.0 H591.3 V20.0 H618.5 V20.0 H645.7 V20.0 H672.8 V20.0 H700.0"/>
+<path class="c-inj" d="M48.0,107.5 H75.2 V95.0 H102.3 V85.0 H129.5 V90.0 H156.7 V100.0 H183.8 V115.0 H211.0 V125.0 H238.2 V132.5 H265.3 V122.5 H292.5 V120.0 H319.7 V145.0 H346.8 V157.5 H374.0 V157.5 H401.2 V145.0 H428.3 V120.0 H455.5 V117.5 H482.7 V130.0 H509.8 V140.0 H537.0 V145.0 H564.2 V135.0 H591.3 V120.0 H618.5 V105.0 H645.7 V95.0 H672.8 V100.0 H700.0"/>
+<line class="c-axis" x1="48" x2="700" y1="270" y2="270"/>
+<text class="c-text" x="48.0" y="288" text-anchor="start">00:00</text>
+<text class="c-text" x="211.0" y="288" text-anchor="middle">06:00</text>
+<text class="c-text" x="374.0" y="288" text-anchor="middle">12:00</text>
+<text class="c-text" x="537.0" y="288" text-anchor="middle">18:00</text>
+<text class="c-text" x="700.0" y="288" text-anchor="end">24:00</text>
+<text class="c-label c-label-accent" x="56.0" y="36.0">flexible extension</text>
+<text class="c-label c-label-accent" x="56.0" y="188.0">firm part, always available (4 MW)</text>
+<text class="c-label c-label-warn" x="374.0" y="79.5" text-anchor="middle">curtailed</text>
+</svg>
+      </div>
+      <figcaption>
+        <ul class="legend">
+          <li><span class="sw env"></span>Operating envelope (injection limit)</li>
+          <li><span class="sw"></span>Injected power</li>
+          <li><span class="sw avail"></span>Available wind power</li>
+          <li><span class="sw curt"></span>Curtailed</li>
+        </ul>
+        <span>Illustrative data for a wind farm with a 4&nbsp;MW firm connection. Around midday the network is congested, the envelope tightens and part of the available power is curtailed.</span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="block alt" id="awards">
+  <div class="wrap">
+    <div class="head"><h2>Academic awards</h2></div>
+    <div class="grid">
+      <article class="card award">
+        <div class="medal"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 20h8M10 17h4"/></svg></div>
+        <div>
+          <span class="tag">Master's thesis</span>
+          <h3>Elia Group Award</h3>
+          <p>Awarded for my master's thesis on TSO/DSO coordination through power operating envelopes. <span class="todo">Official citation, if any.</span></p>
+          <span class="date"><span class="todo">2026: confirm year</span></span>
+        </div>
+      </article>
+      <article class="card award">
+        <div class="medal"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 20h8M10 17h4"/></svg></div>
+        <div>
+          <span class="tag">Master's thesis</span>
+          <h3>AIM Award for the best master's thesis</h3>
+          <p>Given each year by AIM to the best master's theses of Montefiore Institute graduates.</p>
+          <span class="date"><span class="todo">2026: confirm year</span></span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="output">
+  <div class="wrap">
+    <div class="head"><h2>Papers and talks</h2></div>
+    <div class="rows">
+      <article class="row">
+        <span class="pill">In progress</span>
+        <div>
+          <h3>From Long-Term Flexible Connection Contracts to Close-to-Real-Time Operation: A Unified Envelope-Based Operational Scheme for Distribution Networks</h3>
+          <p><span class="todo">Confirm status, venue and co-authors before publishing this entry.</span></p>
+        </div>
+      </article>
+      <article class="row">
+        <span class="pill">Under review</span>
+        <div>
+          <h3>Two journal articles on envelope-based network operation</h3>
+          <p><span class="todo">Add titles and preprint links once they can be shared.</span></p>
+        </div>
+      </article>
+      <article class="row">
+        <span class="pill">ECOS 2026</span>
+        <div>
+          <h3>Remote Renewable Energy Hubs</h3>
+          <p>One oral presentation and two posters. <span class="todo">Add the three titles, co-authors and links.</span></p>
+        </div>
+      </article>
+      <article class="row">
+        <span class="pill">Thesis 2026</span>
+        <div>
+          <h3>TSO/DSO coordination through power operating envelopes</h3>
+          <p>Master's thesis, University of Liège. QC relaxation with phase-shifting transformers; partners RTE, Gérédis and TU Delft. <span class="todo">Exact title and link to the manuscript.</span></p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="block alt" id="teaching">
+  <div class="wrap">
+    <div class="head"><h2>Teaching</h2><p>My courses</p></div>
+    <div class="grid" style="max-width: 420px; margin: 0 auto;">
+      <article class="card">
+        <div class="thumb">
+          <svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs><linearGradient id="g4" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1b3aa8"/><stop offset="1" stop-color="#0b1f4d"/></linearGradient></defs>
+            <rect width="320" height="180" fill="url(#g4)"/>
+            <path d="M50 25V150H285" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="2"/>
+            <path d="M60 135H110V115H150V95H195V70H235V45H275" fill="none" stroke="#ffd27a" stroke-width="3" stroke-linejoin="round"/>
+            <path d="M60 40H105V62H150V88H200V112H240V132H275" fill="none" stroke="#45cfc8" stroke-width="3" stroke-linejoin="round"/>
+            <circle cx="172" cy="92" r="7" fill="#fff"/>
+            <path d="M172 92V150M50 92H172" stroke="#fff" stroke-opacity=".5" stroke-dasharray="4 4"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <span class="tag">Energy markets</span>
+          <h3>Energy Market</h3>
+          <p>Teaching support for the course given at the University of Liège. <span class="todo">Course code and link.</span></p>
+          <span class="date">2026–27</span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="contact">
+  <div class="wrap">
+    <div class="head"><h2>Contact</h2></div>
+    <div class="mailbox">
+      <p>The quickest way to reach me is by email.</p>
+      <a class="btn" href="mailto:anthony.maio@uliege.be"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>Send me an email</a>
+      <p class="addr">anthony.maio@uliege.be</p>
+      <p class="where">Smart Grids Lab, University of Liège, Belgium</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>© 2026 Anthony Maio</footer>
+
+</body>
+</html>
